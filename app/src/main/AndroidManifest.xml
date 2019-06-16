@@ -33,7 +33,7 @@
         <service
             android:name="ProxyService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>
