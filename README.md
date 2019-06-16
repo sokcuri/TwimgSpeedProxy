@@ -6,7 +6,8 @@ VPN을 사용하지 않고 공앱의 프록시 기능을 사용하므로, 삼성
 **앱 설치 후 서비스를 시작해야 하고, 추가적으로 트위터 공식 앱의 프록시 설정이 필요합니다. 설명서를 꼭 참고하세요**
 
 * [트위터 이미지 고속 프록시 설명서](https://docs.google.com/document/d/e/2PACX-1vSJr_ajbtPPDHl_9YXjl_-tr8eBprA0MJwN3PT8fU4-dOVpybbxOUVhDo0sOCMxiL86P1QhFDGp_M6e/pub)
-* [APK 다운받으러 가기](https://github.com/sokcuri/TwimgSpeedProxy/releases)
+* [플레이 스토어에서 다운받기](https://play.google.com/store/apps/details?id=com.sokcuri.twimgspeedproxy)
+* [APK 수동 다운받기](https://github.com/sokcuri/TwimgSpeedProxy/releases)
 
 ## 관련 프로젝트
 * [트위터 이미지 속도 패치](https://github.com/sokcuri/TwimgSpeedPatch)
