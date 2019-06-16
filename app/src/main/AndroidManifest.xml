@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-feature android:name="android.hardware.screen.PORTRAIT" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-feature android:name="android.hardware.LOCATION" android:required="false" />
+    <uses-feature android:name="android.hardware.location.GPS" android:required="false" />
+    <uses-feature android:name="android.hardware.MICROPHONE" android:required="false" />
+
     <uses-feature
             android:name="com.twitter.android.settings.SettingsActivity"
             android:required="false" />
