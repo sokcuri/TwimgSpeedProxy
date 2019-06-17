@@ -10,8 +10,8 @@ android {
         applicationId "com.sokcuri.twimgspeedproxy"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.0"
+        versionCode 6
+        versionName "20190618"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
