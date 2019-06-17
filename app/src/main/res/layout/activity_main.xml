@@ -4,87 +4,88 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             android:background="@drawable/bg" android:id="@+id/rootLayout">
-
-    <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
+                                             android:padding="16dp"
+                                             android:background="@drawable/bg"
+                                             android:id="@+id/rootLayout">
+    <TextView
+            android:text="TwimgSpeedProxy\nby @sokcuri"
+            android:textSize="32sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:id="@+id/titleTextView"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/subLayout">
-        <TextView
-                android:text="TwimgSpeedProxy\nby @sokcuri"
-                android:textSize="32dp"
-                android:layout_width="268dp"
-                android:layout_height="81dp"
-                android:textColor="#fff"
-                android:id="@+id/textView" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-                android:text="트위터 공앱 프록시 설정이 필요합니다"
-                android:textSize="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:id="@+id/textView2" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"/>
-        <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:scaleX="2"
-                android:scaleY="2" android:id="@+id/serviceSwitch" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
-        <Button
-                android:text="Port: 57572"
-                android:layout_height="wrap_content" android:id="@+id/portButton" android:layout_width="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/serviceSwitch" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="6dp"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="24dp" app:layout_constraintEnd_toStartOf="@+id/serviceSwitch"/>
+    <TextView
+            android:text="트위터 공앱 프록시 설정이 필요합니다"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:id="@+id/explTextView" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/portButton"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="2"
+            android:scaleY="2" android:id="@+id/serviceSwitch" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+            app:layout_constraintEnd_toEndOf="@+id/portButton"
+            android:layout_marginEnd="24dp"/>
+    <Button
+            android:text="Port: 57572"
+            android:layout_height="wrap_content" android:id="@+id/portButton" android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/explTextView"
+            app:layout_constraintBottom_toBottomOf="@+id/explTextView"/>
+
+    <!-- XML 아래쪽에 있는 뷰가 z축 상으로 더 앞에 가므로 버튼이 이미지를 가리는 작은 화면을 고려해
+    이미지뷰보다 버튼을 XML 하단에 배치 -->
+
+    <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp" app:srcCompat="@mipmap/twitter"
+            android:id="@+id/twitterImg"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginBottom="32dp"/>
+
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@+id/explTextView"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintVertical_bias="0.3"
+                  android:gravity="center"
+                  android:id="@+id/linearLayout">
         <Button
                 android:text="프록시 설정법 보기"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/readmeButton"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/openProjectButton"
                 android:layout_marginBottom="16dp"/>
         <Button
                 android:text="프로젝트 페이지로"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/openProjectButton"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/openSokcuriTwitter"
                 android:layout_marginBottom="16dp"/>
         <Button
                 android:text="소쿠릿 트위터 가기"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/openSokcuriTwitter"
-
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="105dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="104dp" android:layout_marginTop="60dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        <ImageView
-                android:layout_width="160dp"
-                android:layout_height="160dp" app:srcCompat="@mipmap/twitter"
-                android:id="@+id/twitterImg"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" android:layout_marginBottom="50dp"
-                app:layout_constraintHorizontal_bias="0.5"/>
-
-    </android.support.constraint.ConstraintLayout>
+                android:id="@+id/openSokcuriTwitter"/>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
