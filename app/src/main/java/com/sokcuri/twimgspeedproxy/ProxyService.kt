@@ -1,16 +1,13 @@
 package com.sokcuri.twimgspeedproxy
 
-import com.sokcuri.twimgspeedproxy.R
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.StrictMode
-import android.os.SystemClock
 import android.support.v4.app.NotificationCompat
 import android.widget.Toast
-import android.app.PendingIntent
 
 
 class ProxyService: Service() {
@@ -44,7 +41,7 @@ class ProxyService: Service() {
         if (Build.VERSION.SDK_INT >= 26) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
-                CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
+                CHANNEL_NAME, NotificationManager.IMPORTANCE_NONE
             )
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(notificationChannel)
@@ -77,24 +74,6 @@ class ProxyService: Service() {
             .setContentIntent(contentIntent)
             .build()
         startForeground(2001, notification)
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        this.littleProxy.stop()
-        val restartServiceIntent = Intent(applicationContext, this.javaClass)
-        restartServiceIntent.setPackage(packageName)
-
-        val restartServicePendingIntent =
-            PendingIntent.getService(applicationContext, 1,
-                restartServiceIntent, PendingIntent.FLAG_ONE_SHOT)
-        val alarmService = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmService.set(
-            AlarmManager.ELAPSED_REALTIME,
-            SystemClock.elapsedRealtime() + 1000,
-            restartServicePendingIntent
-        )
-
-        super.onTaskRemoved(rootIntent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
