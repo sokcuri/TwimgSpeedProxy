@@ -43,14 +43,17 @@ class MainActivity : AppCompatActivity() {
             serviceSwitch.isChecked = true
         }
         serviceSwitch.setOnCheckedChangeListener { _, isChecked ->
-            mRunnable = Runnable {
+            serviceSwitch.isClickable = false
+            Handler().postDelayed({
                 if (isChecked) {
                     startProxy()
                 } else {
                     stopProxy()
                 }
-            }
-            Handler().postDelayed(mRunnable, 1000)
+                Handler().postDelayed({
+                    serviceSwitch.isClickable = true
+                }, 500)
+            }, 300)
         }
 
         var readmeButton = findViewById<Button>(R.id.readmeButton)
