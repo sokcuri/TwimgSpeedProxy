@@ -9,16 +9,13 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.Toast
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import android.content.Intent
 import android.net.Uri
+import android.widget.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         context = this
 
+        var versionInfo = findViewById<TextView>(R.id.versionInfo)
+        var pInfo = packageManager.getPackageInfo(packageName, 0)
+        var version = pInfo.versionName
+        versionInfo.text = version
         var serviceSwitch = findViewById<Switch>(R.id.serviceSwitch)
         if (ServiceController.isServiceRunning) {
             serviceSwitch.isChecked = true
@@ -71,6 +72,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         var twitterButton = findViewById<Button>(R.id.openSokcuriTwitter)
+        twitterButton.setOnClickListener {
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/sokcuri")
+            )
+            startActivity(browserIntent)
+        }
+
+        var opentwitterButton = findViewById<Button>(R.id.openTwitter)
         twitterButton.setOnClickListener {
             val browserIntent = Intent(
                 Intent.ACTION_VIEW,
