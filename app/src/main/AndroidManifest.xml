@@ -2,38 +2,74 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.sokcuri.twimgspeedproxy">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-feature android:name="android.hardware.screen.PORTRAIT" android:required="false" />
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-    <uses-feature android:name="android.hardware.LOCATION" android:required="false" />
-    <uses-feature android:name="android.hardware.location.GPS" android:required="false" />
-    <uses-feature android:name="android.hardware.MICROPHONE" android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <uses-feature
+            android:name="android.hardware.screen.PORTRAIT"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.telephony"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.LOCATION"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.location.GPS"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.MICROPHONE"
+            android:required="false"/>
+    <uses-feature
             android:name="com.twitter.android.settings.SettingsActivity"
-            android:required="false" />
+            android:required="false"/>
+
     <application
+            android:name=".AppNotification"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".SettingActivity">
+        </activity>
         <activity
                 android:name=".MainActivity"
-                android:label="@string/app_name">
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <action android:name="com.twitter.android.WidgetSettingsActivity" />
+                <action android:name="com.twitter.android.WidgetSettingsActivity"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <receiver
+                android:name=".BootReceiver"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.BOOT_COMPLETED" android:priority="999" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver
+                android:name=".PackageReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
         <service
-            android:name="ProxyService"
-            android:enabled="true"
-            android:exported="false" />
+                android:name=".ProxyService"
+                android:enabled="true"
+                android:exported="false"/>
     </application>
 
 </manifest>

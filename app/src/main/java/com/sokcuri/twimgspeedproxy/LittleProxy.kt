@@ -3,6 +3,9 @@ package com.sokcuri.twimgspeedproxy
 import android.content.Context
 import org.littleshoot.proxy.HttpProxyServer
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer
+import android.support.v7.preference.PreferenceManager
+import android.util.Log
+
 
 class LittleProxy {
     lateinit var server: HttpProxyServer
@@ -10,13 +13,19 @@ class LittleProxy {
 
     companion object {
         var port = 57572
+        var twimg = true
+        var twvideo = true
+        var twabs = true
     }
     constructor(context: Context) {
         this.context = context
 
-        val sharedPref = context.getSharedPreferences("global", Context.MODE_PRIVATE) ?: return
-        val defaultValue = Integer.parseInt(context.resources.getString(R.string.proxy_port))
-        port = sharedPref.getInt(context.getString(R.string.proxy_port), defaultValue)
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+
+        port = Integer.parseInt(sharedPref.getString("proxyPort", "57572"))
+        twimg = sharedPref.getBoolean("enableTwimgSpeed", true)
+        twvideo = sharedPref.getBoolean("enableTwvideoSpeed", true)
+        twabs = sharedPref.getBoolean("enableTwabsSpeed", true)
     }
 
     fun start() {

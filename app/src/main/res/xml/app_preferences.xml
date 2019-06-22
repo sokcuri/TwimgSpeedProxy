@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+                android:title="환경설정">
+
+        <SwitchPreferenceCompat
+                android:key="alwaysRun"
+                android:title="부팅시 서비스 자동으로 시작하기"
+                android:summary="항상 프록시 서비스가 실행되도록 합니다"
+                android:defaultValue="false" />
+
+        <EditTextPreference
+                android:key="proxyPort"
+                android:title="프록시 포트 번호"
+                android:summary="0"
+                android:dialogMessage="포트 번호를 변경하면 트위터 공앱에서도 바꿔주세요"
+                android:defaultValue="@string/defaultProxyPort"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+                android:title="서버 설정"
+                android:summary="트위터 고속 프록시를 적용할 서버를 선택합니다">
+            <CheckBoxPreference
+                android:key="enableTwimgSpeed"
+                android:title="트위터 이미지 서버"
+                android:summary="pbs.twimg.com"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="enableTwvideoSpeed"
+                android:title="트위터 비디오 서버"
+                android:summary="video.twimg.com"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="enableTwabsSpeed"
+                android:title="트위터 공용 리소스 서버"
+                android:summary="abs.twimg.com"
+                android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+                android:title="정보">
+    <Preference
+                android:title="개발자 트위터 가기"
+                android:summary="소쿠릿">
+                <intent android:action="android.intent.action.VIEW"
+                        android:data="https://twitter.com/sokcuri" />
+    </Preference>
+    <Preference
+                android:title="프로젝트 페이지"
+                android:summary="깃허브 프로젝트 페이지로 이동합니다">
+                <intent android:action="android.intent.action.VIEW"
+                        android:data="https://github.com/sokcuri/twimgspeedproxy" />
+    </Preference>
+    <Preference
+                android:title="트위터 이미지 고속 프록시 버전"
+                android:key="versionInfo"
+                android:summary="0.0.0">
+                <intent android:action="android.intent.action.VIEW"
+                        android:data="market://details?id=com.sokcuri.twimgspeedproxy"
+                        android:targetPackage="com.android.vending"/>
+    </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -3,22 +3,31 @@ package com.sokcuri.twimgspeedproxy
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
+import android.os.PowerManager
+import android.os.PowerManager.PARTIAL_WAKE_LOCK
 import android.os.StrictMode
 import android.support.v4.app.NotificationCompat
 import android.widget.Toast
 
 
 class ProxyService: Service() {
+
     lateinit var context: Context
     lateinit var littleProxy: LittleProxy
+    lateinit var packageReceiver: PackageReceiver
     private var currentIntent: Intent? = null
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     override fun onCreate() {
+        var powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        var wakeLock = powerManager.newWakeLock(PARTIAL_WAKE_LOCK, "myapp:wakelock");
+        wakeLock.acquire()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundServiceForOreo()
         else
@@ -27,18 +36,25 @@ class ProxyService: Service() {
         context = applicationContext
         littleProxy = LittleProxy(context)
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
+        if (Build.VERSION.SDK_INT > 9) {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
         }
 
         Toast.makeText(this, "TwimgSpeedProxy by @sokcuri", Toast.LENGTH_LONG).show()
+
+        packageReceiver = PackageReceiver()
+        val pFilter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
+        pFilter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        pFilter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+        pFilter.addDataScheme("package")
+        registerReceiver(packageReceiver, pFilter)
     }
 
     private fun startForegroundServiceForOreo() {
         val CHANNEL_ID = "com.sokcuri.twimgspeedproxy"
         val CHANNEL_NAME = "TwimgSpeedProxy Background Service"
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME, NotificationManager.IMPORTANCE_NONE
@@ -77,13 +93,15 @@ class ProxyService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Toast.makeText(this, "트위터 이미지 고속 프록시 서비스 시작: Port " + LittleProxy.port.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "트위터 이미지 고속 프록시 서비스 시작: Port " + LittleProxy.port.toString(), Toast.LENGTH_LONG).show();
         this.currentIntent = currentIntent
         this.littleProxy.start()
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
+        unregisterReceiver(packageReceiver)
+
         super.onDestroy()
         littleProxy.stop()
     }

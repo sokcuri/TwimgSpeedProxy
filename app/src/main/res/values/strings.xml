@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">트위터 이미지 고속 프록시</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="proxy_port">57572</string>
+    <string name="navigation_drawer_open">네비게이션 창을 엽니다</string>
+    <string name="navigation_drawer_close">네비게이션 창을 닫습니다</string>
+    <string name="defaultProxyPort">57572</string>
 </resources>
