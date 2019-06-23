@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.os.PowerManager
-import android.os.PowerManager.PARTIAL_WAKE_LOCK
 import android.os.StrictMode
 import android.support.v4.app.NotificationCompat
 import android.widget.Toast
@@ -24,10 +22,6 @@ class ProxyService: Service() {
     }
 
     override fun onCreate() {
-        var powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        var wakeLock = powerManager.newWakeLock(PARTIAL_WAKE_LOCK, "myapp:wakelock");
-        wakeLock.acquire()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundServiceForOreo()
         else
