@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-        var isWhiteListing = false
+        var isWhiteListing: Boolean
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             isWhiteListing = pm.isIgnoringBatteryOptimizations(packageName)
 
@@ -152,16 +152,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun openBrowser(uriString: String) {
-        val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse(uriString))
+        try {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uriString)
+            )
 
-        val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
-        val browseResolution = packageManager.resolveActivity(
-            browseIntent,
-            PackageManager.MATCH_DEFAULT_ONLY
-        )
-        intent.setPackage(browseResolution.activityInfo.applicationInfo.packageName);
-        startActivity(intent)
+            val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
+            val browseResolution = packageManager.resolveActivity(
+                browseIntent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            intent.setPackage(browseResolution.activityInfo.applicationInfo.packageName);
+            startActivity(intent)
+        } catch(e: Exception) {
+            openIntent(uriString)
+        }
     }
 
     private fun openIntent(uriString: String) {
