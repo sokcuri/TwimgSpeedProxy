@@ -33,21 +33,6 @@
             <intent android:action="android.intent.action.VIEW"
                     android:data="https://twimg.ryuar.in/" />
         </Preference>
-        <!--<CheckBoxPreference-->
-                <!--android:key="enableTwimgSpeed"-->
-                <!--android:title="트위터 이미지 서버"-->
-                <!--android:summary="pbs.twimg.com"-->
-                <!--android:defaultValue="true"/>-->
-        <!--<CheckBoxPreference-->
-                <!--android:key="enableTwvideoSpeed"-->
-                <!--android:title="트위터 비디오 서버"-->
-                <!--android:summary="video.twimg.com"-->
-                <!--android:defaultValue="true"/>-->
-        <!--<CheckBoxPreference-->
-                <!--android:key="enableTwabsSpeed"-->
-                <!--android:title="트위터 공용 리소스 서버"-->
-                <!--android:summary="abs.twimg.com"-->
-                <!--android:defaultValue="true"/>-->
     </PreferenceCategory>
     <PreferenceCategory
                 android:title="정보">

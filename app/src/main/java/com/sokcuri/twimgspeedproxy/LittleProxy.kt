@@ -21,9 +21,6 @@ class LittleProxy {
 
     companion object {
         var port = 57572
-        var twimg = true
-        var twvideo = true
-        var twabs = true
         var cdnServer: String? = null
     }
     constructor(context: Context) {
@@ -32,10 +29,6 @@ class LittleProxy {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
 
         port = Integer.parseInt(sharedPref.getString("proxyPort", "57572")!!)
-//        twimg = sharedPref.getBoolean("enableTwimgSpeed", true)
-//        twvideo = sharedPref.getBoolean("enableTwvideoSpeed", true)
-//        twabs = sharedPref.getBoolean("enableTwabsSpeed", true)
-
         val serverArray = context.resources.getStringArray(R.array.servers_value)
         cdnServer = serverArray.find {
             it == sharedPref.getString("cdnServer", "")

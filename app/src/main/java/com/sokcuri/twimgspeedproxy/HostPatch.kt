@@ -5,17 +5,11 @@ import android.util.Log
 class HostPatch {
     companion object {
         fun changeHost(host: String, cdnServer: String): String {
-            val changedHost = when {
-                host == "pbs.twimg.com" && LittleProxy.twimg -> {
-                    pbs(cdnServer)
-                }
-                host == "video.twimg.com" && LittleProxy.twvideo -> {
-                    video(cdnServer)
-                }
-                host == "abs.twimg.com" && LittleProxy.twabs -> {
-                    abs(cdnServer)
-                }
-                else -> host
+            val changedHost = when (host) {
+                "pbs.twimg.com"     -> pbs(cdnServer)
+                "video.twimg.com"   -> video(cdnServer)
+                "abs.twimg.com"     -> abs(cdnServer)
+                else                -> host
             }
             if (host != changedHost) {
                 Log.d("HostPatch::changeHost", "Request host: $host -> $changedHost")

@@ -55,33 +55,6 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
                 }
             }
 
-        findPreference("enableTwimgSpeed").onPreferenceChangeListener =
-            object : Preference.OnPreferenceChangeListener {
-                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
-                    LittleProxy.twimg = p1 as Boolean
-                    Log.d("enableTwimgSpeed", p1.toString())
-                    return true
-                }
-            }
-
-        findPreference("enableTwvideoSpeed").onPreferenceChangeListener =
-            object : Preference.OnPreferenceChangeListener {
-                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
-                    LittleProxy.twvideo = p1 as Boolean
-                    Log.d("enableTwvideoSpeed", p1.toString())
-                    return true
-                }
-            }
-
-        findPreference("enableTwabsSpeed").onPreferenceChangeListener =
-            object : Preference.OnPreferenceChangeListener {
-                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
-                    LittleProxy.twabs = p1 as Boolean
-                    Log.d("enableTwabsSpeed", p1.toString())
-                    return true
-                }
-            }
-
         findPreference("cdnServer").onPreferenceChangeListener =
             object : Preference.OnPreferenceChangeListener {
                 override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
