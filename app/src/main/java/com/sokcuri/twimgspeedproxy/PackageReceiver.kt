@@ -16,10 +16,10 @@ class PackageReceiver : BroadcastReceiver() {
                 val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
                 if (sharedPref.getBoolean("serviceRun", false)) {
                     Log.d("PackageReceiver", "ACTION_MY_PACKAGE_REPLACED")
-                    MainActivity.setServiceSwitch(true)
                     val intent = Intent(context, ProxyService::class.java)
                     intent.action = ProxyService.ActionStartForegroundService
                     context.startService(intent)
+                    MainActivity.setServiceSwitch(true)
                 }
             }
         }

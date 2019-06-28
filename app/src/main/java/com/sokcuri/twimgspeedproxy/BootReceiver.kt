@@ -13,10 +13,10 @@ class BootReceiver : BroadcastReceiver() {
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         if (sharedPref.getBoolean("alwaysRun", false)) {
-            MainActivity.setServiceSwitch(true)
             val intent = Intent(context, ProxyService::class.java)
             intent.action = ProxyService.ActionStartForegroundService
             context.startService(intent)
+            MainActivity.setServiceSwitch(true)
         }
     }
 }
