@@ -32,9 +32,9 @@ class LittleProxy {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
 
         port = Integer.parseInt(sharedPref.getString("proxyPort", "57572")!!)
-        twimg = sharedPref.getBoolean("enableTwimgSpeed", true)
-        twvideo = sharedPref.getBoolean("enableTwvideoSpeed", true)
-        twabs = sharedPref.getBoolean("enableTwabsSpeed", true)
+//        twimg = sharedPref.getBoolean("enableTwimgSpeed", true)
+//        twvideo = sharedPref.getBoolean("enableTwvideoSpeed", true)
+//        twabs = sharedPref.getBoolean("enableTwabsSpeed", true)
 
         val serverArray = context.resources.getStringArray(R.array.servers_value)
         cdnServer = serverArray.find {
@@ -56,6 +56,8 @@ class LittleProxy {
                 override fun filterRequest(originalRequest: HttpRequest, ctx: ChannelHandlerContext): HttpFilters {
                     return object : HttpFiltersAdapter(originalRequest) {
                         override fun proxyToServerResolutionStarted(hostAndPort: String): InetSocketAddress? {
+                            RyuarinService.update()
+
                             var parsedHostAndPort: HostAndPort
                             try {
                                 parsedHostAndPort = HostAndPort.fromString(hostAndPort)
