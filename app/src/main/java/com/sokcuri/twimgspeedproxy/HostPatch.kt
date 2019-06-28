@@ -25,8 +25,17 @@ class HostPatch {
             return changedHost
         }
 
+        private fun auto(host: String): String {
+            return try {
+                RyuarinService.table?.bestCdn!!.getValue(host)
+            } catch (exception: Exception) {
+                // Log.d("HostPatch::auto", "cdn host not found - $host")
+                changeHost(host, "Akamai@eip-ntt")
+            }
+        }
         private fun pbs(cdnServer: String): String {
             return when (cdnServer) {
+                "Auto@twimg.ryuar.in" -> auto("pbs.twimg.com")
                 "Akamai@eip-ntt" -> "eip-ntt.pbs.twimg.com.akahost.net"
                 "Akamai@eip-tata" -> "eip-tata.pbs.twimg.com.akahost.net"
                 "Akamai@ak" -> "pbs-ak.twimg.com"
@@ -39,6 +48,7 @@ class HostPatch {
 
         private fun video(cdnServer: String): String {
             return when (cdnServer) {
+                "Auto@twimg.ryuar.in" -> auto("video.twimg.com")
                 "Akamai@eip-ntt" -> "eip-ntt.video.twimg.com.akahost.net"
                 "Akamai@eip-tata" -> "eip-tata.video.twimg.com.akahost.net"
                 "Akamai@ak" -> "video-ak.twimg.com"
@@ -51,6 +61,7 @@ class HostPatch {
 
         private fun abs(cdnServer: String): String {
             return when (cdnServer) {
+                "Auto@twimg.ryuar.in" -> auto("abs.twimg.com")
                 "Akamai@eip-ntt" -> "abs-ak.twimg.com"
                 "Akamai@eip-tata" -> "abs-ak.twimg.com"
                 "Akamai@ak" -> "abs-ak.twimg.com"
