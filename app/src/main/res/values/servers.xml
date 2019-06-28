@@ -3,7 +3,7 @@
     <string-array name="servers">
         <item>Auto (twimg.ryuar.in)</item>
         <item>Akamai (eip-ntt)</item>
-        <item>Akamai (eip-papa)</item>
+        <item>Akamai (eip-tata)</item>
         <item>Akamai (ak)</item>
         <item>Zero</item>
         <item>Edgecast</item>
@@ -12,7 +12,7 @@
     <string-array name="servers_value">
         <item>Auto@twimg.ryuar.in</item>
         <item>Akamai@eip-ntt</item>
-        <item>Akamai@eip-papa</item>
+        <item>Akamai@eip-tata</item>
         <item>Akamai@ak</item>
         <item>Zero</item>
         <item>Edgecast@ec</item>
