@@ -1,16 +1,22 @@
 package com.sokcuri.twimgspeedproxy
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.preference.*
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import kotlinx.android.synthetic.main.content_main.*
+import android.R.id.edit
+import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
+import android.R.attr.key
+
+
 
 
 class SettingPreferenceFragment : PreferenceFragmentCompat() {
@@ -21,6 +27,8 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
         findPreference("versionInfo").summary = BuildConfig.VERSION_NAME
         findPreference("proxyPort").summary =
             sharedPref.getString("proxyPort", "57572")
+        findPreference("cdnServer").summary =
+            sharedPref.getString("cdnServer", "Akamai")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +44,11 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
                     }
 
                     LittleProxy.port = Integer.parseInt(p1)
-                    if (ServiceController.isServiceRunning) {
-                        MainActivity.serviceController?.stopService()
-                        MainActivity.serviceController?.startService()
-                    }
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+                    context?.startService(intent)
+
                     p0?.summary = LittleProxy.port.toString()
                     Log.d("proxyPort", p1.toString())
                     return true
@@ -69,6 +78,28 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
                 override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
                     LittleProxy.twabs = p1 as Boolean
                     Log.d("enableTwabsSpeed", p1.toString())
+                    return true
+                }
+            }
+
+        findPreference("cdnServer").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    LittleProxy.cdnServer = p1 as String
+                    p0?.summary = p1.toString()
+                    Log.d("cdnServer", p1.toString())
+
+                    val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+                    val editor = sharedPref.edit()
+                    editor.putString("cdnServer", p1)
+                    editor.commit()
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+                    context?.startService(intent)
+
+                    Snackbar.make(view!!, "CDN 서버 변경은 트위터를 종료 후 다시 시작해야 적용됩니다",
+                        Snackbar.LENGTH_SHORT).show()
                     return true
                 }
             }

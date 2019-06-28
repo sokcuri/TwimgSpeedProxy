@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="servers">
+        <item>Auto (twimg.ryuar.in)</item>
+        <item>Akamai (eip-ntt)</item>
+        <item>Akamai (eip-papa)</item>
+        <item>Akamai (ak)</item>
+        <item>Zero</item>
+        <item>Edgecast</item>
+        <item>Fastly</item>
+    </string-array>
+    <string-array name="servers_value">
+        <item>Auto@twimg.ryuar.in</item>
+        <item>Akamai@eip-ntt</item>
+        <item>Akamai@eip-papa</item>
+        <item>Akamai@ak</item>
+        <item>Zero</item>
+        <item>Edgecast@ec</item>
+        <item>Fastly@ft</item>
+    </string-array>
+</resources>

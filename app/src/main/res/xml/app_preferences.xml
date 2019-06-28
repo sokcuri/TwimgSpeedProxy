@@ -17,11 +17,17 @@
                 android:defaultValue="@string/defaultProxyPort"
                 android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
     </PreferenceCategory>
-
     <PreferenceCategory
                 android:title="서버 설정"
                 android:summary="트위터 고속 프록시를 적용할 서버를 선택합니다">
-            <CheckBoxPreference
+        <ListPreference
+                android:key="cdnServer"
+                android:title="사용중인 CDN 서버"
+                android:summary="Akamai"
+                android:entries="@array/servers"
+                android:entryValues="@array/servers_value"
+        />
+        <CheckBoxPreference
                 android:key="enableTwimgSpeed"
                 android:title="트위터 이미지 서버"
                 android:summary="pbs.twimg.com"

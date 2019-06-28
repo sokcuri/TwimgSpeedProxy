@@ -3,4 +3,9 @@
     <string name="navigation_drawer_open">네비게이션 창을 엽니다</string>
     <string name="navigation_drawer_close">네비게이션 창을 닫습니다</string>
     <string name="defaultProxyPort">57572</string>
+    <string name="cdn_auto">Auto</string>
+    <string name="cdn_akamai">Akamai</string>
+    <string name="cdn_zero">Zero</string>
+    <string name="cdn_edgecast">Edgecast</string>
+    <string name="cdn_fastly">Fastly</string>
 </resources>

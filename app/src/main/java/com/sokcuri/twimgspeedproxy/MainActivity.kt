@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -13,7 +12,6 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.content.pm.PackageManager
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
@@ -22,14 +20,30 @@ import android.util.Log
 import android.widget.*
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
+import android.widget.CompoundButton
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     companion object {
-        var serviceController: ServiceController? = null
+        var mainActivity: MainActivity? = null
+        fun setServiceSwitch(checked: Boolean) {
+            if (mainActivity == null) return
+            var serviceSwitch = MainActivity.mainActivity!!.findViewById<Switch>(R.id.serviceSwitch)
+            serviceSwitch.setOnCheckedChangeListener(null)
+            serviceSwitch.isChecked = checked
+            serviceSwitch.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    mainActivity!!.startProxy()
+                } else {
+                    mainActivity!!.stopProxy()
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mainActivity = this
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         var isWhiteListing: Boolean
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -61,8 +75,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        serviceController = ServiceController(this, ProxyService::javaClass.get(ProxyService()))
-
         fab.setOnClickListener { view ->
             shareTwitter("트위터 이미지 고속 프록시 사용중! 트위터 이미지 로딩이 느리다면 바로 사용해봐요~ https://play.google.com/store/apps/details?id=com.sokcuri.twimgspeedproxy")
         }
@@ -90,29 +102,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var versionInfo = findViewById<TextView>(R.id.versionInfo)
         var pInfo = packageManager.getPackageInfo(packageName, 0)
         var version = pInfo.versionName
-        versionInfo.text = version
-        var serviceSwitch = findViewById<Switch>(R.id.serviceSwitch)
-        if (ServiceController.isServiceRunning) {
-            serviceSwitch.isChecked = true
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val serverArray = resources.getStringArray(R.array.servers_value)
+        var cdnServer = serverArray.find {
+            it == sharedPref.getString("cdnServer", "")
+        }
+        if (cdnServer == null) {
+            cdnServer = serverArray[0]
+
+            var editor = sharedPref.edit()
+            editor.putString("cdnServer", cdnServer)
+            editor.commit()
         }
 
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        versionInfo.text = "$version - $cdnServer"
+        var serviceSwitch = findViewById<Switch>(R.id.serviceSwitch)
+        if (ProxyService.IsServiceRunning) {
+            serviceSwitch.isChecked = true
+        }
 
         serviceSwitch.setOnCheckedChangeListener { _, isChecked ->
-            serviceSwitch.isClickable = false
-            Handler().postDelayed({
-                if (isChecked) {
-                    startProxy()
-                } else {
-                    stopProxy()
-                }
-                Handler().postDelayed({
-                    serviceSwitch.isClickable = true
-                }, 500)
-            }, 300)
-        }
-        if (sharedPref.getBoolean("serviceRun", false) && !ServiceController.isServiceRunning) {
-            serviceSwitch.isChecked = true
+            if (isChecked) {
+                mainActivity!!.startProxy()
+            } else {
+                mainActivity!!.stopProxy()
+            }
         }
     }
 
@@ -178,7 +193,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun openTwitter() {
         val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse("https://twitter.com"))
+            Uri.parse("https://twitter.com/home"))
         intent.flags = intent.flags or Intent.FLAG_ACTIVITY_NO_HISTORY
         startActivity(intent)
     }
@@ -225,12 +240,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun startProxy() {
-        stopProxy()
-        serviceController?.startService()
+        val intent = Intent(this@MainActivity, ProxyService::class.java)
+        intent.action = ProxyService.ActionStartForegroundService
+        startService(intent)
     }
 
     private fun stopProxy() {
-        serviceController?.stopService()
+        val intent = Intent(this@MainActivity, ProxyService::class.java)
+        intent.action = ProxyService.ActionStopForegroundService
+        startService(intent)
     }
 
+}
+
+private fun CompoundButton.setOnCheckedChangeListener() {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }

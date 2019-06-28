@@ -153,7 +153,7 @@ abstract class ProxyConnection<I extends HttpObject> extends
                 nextState = readHTTPInitial((I) httpObject);
             } else {
                 // Anything that's not an HttpRequest that came in while
-                // we're pending authentication gets dropped on the floor. This
+                // we're isPending authentication gets dropped on the floor. This
                 // can happen if the connected host already sent us some chunks
                 // (e.g. from a POST) after an initial request that turned out
                 // to require authentication.
@@ -452,7 +452,7 @@ abstract class ProxyConnection<I extends HttpObject> extends
      * State/Management
      **************************************************************************/
     /**
-     * Disconnects. This will wait for pending writes to be flushed before
+     * Disconnects. This will wait for isPending writes to be flushed before
      * disconnecting.
      * 
      * @return Future<Void> for when we're done disconnecting. If we weren't

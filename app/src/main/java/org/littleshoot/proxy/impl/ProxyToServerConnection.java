@@ -41,12 +41,10 @@ import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.MitmManager;
 import org.littleshoot.proxy.TransportProtocol;
 import org.littleshoot.proxy.UnknownTransportProtocolException;
-import com.sokcuri.twimgspeedproxy.HostPatch;
 
 import javax.net.ssl.SSLProtocolException;
 import javax.net.ssl.SSLSession;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Queue;
@@ -628,8 +626,6 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
             });
             cb.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                     proxyServer.getConnectTimeout());
-
-            remoteAddress = HostPatch.Companion.twimg(remoteAddress);
 
             if (localAddress != null) {
                 return cb.connect(remoteAddress, localAddress);

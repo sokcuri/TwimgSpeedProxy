@@ -1,20 +1,63 @@
 package com.sokcuri.twimgspeedproxy
 
-import java.net.InetAddress
-import java.net.InetSocketAddress
+import android.util.Log
 
 class HostPatch {
     companion object {
-        fun resolve(host: String, port: Int): InetSocketAddress  {
-            var netAddr = InetAddress.getByName(host)
-            return InetSocketAddress(netAddr, port)
+        fun changeHost(host: String, cdnServer: String): String {
+            val changedHost = when {
+                host == "pbs.twimg.com" && LittleProxy.twimg -> {
+                    pbs(cdnServer)
+                }
+                host == "video.twimg.com" && LittleProxy.twvideo -> {
+                    video(cdnServer)
+                }
+                host == "abs.twimg.com" && LittleProxy.twabs -> {
+                    abs(cdnServer)
+                }
+                else -> host
+            }
+            if (host != changedHost) {
+                Log.d("HostPatch::changeHost", "Request host: $host -> $changedHost")
+            } else {
+                Log.d("HostPatch::changeHost", "Not changed host: $host ($cdnServer)")
+            }
+            return changedHost
         }
-        fun twimg(addr: InetSocketAddress): InetSocketAddress {
-            when {
-                addr.hostName == "pbs.twimg.com" && LittleProxy.twimg -> return resolve("pbs-ak.twimg.com", addr.port)
-                addr.hostName == "video.twimg.com" && LittleProxy.twvideo  -> return resolve("video-ak.twimg.com", addr.port)
-                addr.hostName == "abs.twimg.com" && LittleProxy.twabs -> return resolve("abs-ak.twimg.com", addr.port)
-                else -> return addr
+
+        private fun pbs(cdnServer: String): String {
+            return when (cdnServer) {
+                "Akamai@eip-ntt" -> "eip-ntt.pbs.twimg.com.akahost.net"
+                "Akamai@eip-tata" -> "eip-tata.pbs.twimg.com.akahost.net"
+                "Akamai@ak" -> "pbs-ak.twimg.com"
+                "Zero" -> "pbs-zero.twimg.com"
+                "Edgecast@ec" -> "pbs-ec.twimg.com"
+                "Fastly@ft" -> "pbs-ft.twimg.com"
+                else -> "pbs-ak.twimg.com"
+            }
+        }
+
+        private fun video(cdnServer: String): String {
+            return when (cdnServer) {
+                "Akamai@eip-ntt" -> "eip-ntt.video.twimg.com.akahost.net"
+                "Akamai@eip-tata" -> "eip-tata.video.twimg.com.akahost.net"
+                "Akamai@ak" -> "video-ak.twimg.com"
+                "Zero" -> "video-zero.twimg.com"
+                "Edgecast@ec" -> "video-ec.twimg.com"
+                "Fastly@ft" -> "video-ft.twimg.com"
+                else -> "video-ak.twimg.com"
+            }
+        }
+
+        private fun abs(cdnServer: String): String {
+            return when (cdnServer) {
+                "Akamai@eip-ntt" -> "abs-ak.twimg.com"
+                "Akamai@eip-tata" -> "abs-ak.twimg.com"
+                "Akamai@ak" -> "abs-ak.twimg.com"
+                "Zero" -> "abs-zero.twimg.com"
+                "Edgecast@ec" -> "abs-ec.twimg.com"
+                "Fastly@ft" -> "abs-ft.twimg.com"
+                else -> "abs-ak.twimg.com"
             }
         }
     }

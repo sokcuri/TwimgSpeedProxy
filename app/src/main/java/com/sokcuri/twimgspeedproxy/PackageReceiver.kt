@@ -7,7 +7,7 @@ import android.support.v7.preference.PreferenceManager
 import android.util.Log
 
 class PackageReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         Log.d("PackageReceiver", "OK")
         val action = intent?.action
         when (action) {
@@ -16,13 +16,11 @@ class PackageReceiver : BroadcastReceiver() {
                 val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
                 if (sharedPref.getBoolean("serviceRun", false)) {
                     Log.d("PackageReceiver", "ACTION_MY_PACKAGE_REPLACED")
-
-                    var serviceController = ServiceController(
-                        context as Context,
-                        ProxyService::javaClass.get(ProxyService())
-                    )
-
-                    serviceController.startService()
+                    ProxyService.IsServiceRunning = true
+                    MainActivity.setServiceSwitch(true)
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionStartForegroundService
+                    context.startService(intent)
                 }
             }
         }
