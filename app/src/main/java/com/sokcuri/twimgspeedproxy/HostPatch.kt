@@ -22,11 +22,6 @@ class HostPatch {
         private fun auto(host: String): String {
             try {
                 for (detail in RyuarinService.table!!.detail.getValue(host).iterator()) {
-                    if (detail.defaultCdn) {
-                        // pass edgecast cdn
-                        continue
-                    }
-
                     return detail.ip
                 }
             } catch (exception: Exception) {
