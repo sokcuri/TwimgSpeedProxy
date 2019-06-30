@@ -47,7 +47,12 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
 
                     val intent = Intent(context, ProxyService::class.java)
                     intent.action = ProxyService.ActionRestartForegroundService
-                    context?.startService(intent)
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
 
                     p0?.summary = LittleProxy.port.toString()
                     Log.d("proxyPort", p1.toString())

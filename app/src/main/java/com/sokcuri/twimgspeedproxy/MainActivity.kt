@@ -12,6 +12,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
@@ -242,13 +243,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun startProxy() {
         val intent = Intent(this@MainActivity, ProxyService::class.java)
         intent.action = ProxyService.ActionStartForegroundService
-        startService(intent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
     private fun stopProxy() {
         val intent = Intent(this@MainActivity, ProxyService::class.java)
         intent.action = ProxyService.ActionStopForegroundService
-        startService(intent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
 }
