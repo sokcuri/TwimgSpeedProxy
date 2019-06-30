@@ -1,6 +1,5 @@
 package com.sokcuri.twimgspeedproxy
 
-import android.widget.Toast
 import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -20,19 +20,26 @@ class HostPatch {
         }
 
         private fun auto(host: String): String {
-            return try {
-                RyuarinService.table?.bestCdn!!.getValue(host)
+            try {
+                for (detail in RyuarinService.table!!.detail.getValue(host).iterator()) {
+                    if (detail.defaultCdn) {
+                        // pass edgecast cdn
+                        continue
+                    }
+
+                    return detail.ip
+                }
             } catch (exception: Exception) {
                 // Log.d("HostPatch::auto", "cdn host not found - $host")
-                changeHost(host, "Akamai@eip-ntt")
             }
+            return changeHost(host, "Akamai@ak")
         }
         private fun pbs(cdnServer: String): String {
             return when (cdnServer) {
                 "Auto@twimg.ryuar.in" -> auto("pbs.twimg.com")
+                "Akamai@ak" -> "pbs-ak.twimg.com"
                 "Akamai@eip-ntt" -> "eip-ntt.pbs.twimg.com.akahost.net"
                 "Akamai@eip-tata" -> "eip-tata.pbs.twimg.com.akahost.net"
-                "Akamai@ak" -> "pbs-ak.twimg.com"
                 "Zero" -> "pbs-zero.twimg.com"
                 "Edgecast@ec" -> "pbs-ec.twimg.com"
                 "Fastly@ft" -> "pbs-ft.twimg.com"
@@ -43,9 +50,9 @@ class HostPatch {
         private fun video(cdnServer: String): String {
             return when (cdnServer) {
                 "Auto@twimg.ryuar.in" -> auto("video.twimg.com")
+                "Akamai@ak" -> "video-ak.twimg.com"
                 "Akamai@eip-ntt" -> "eip-ntt.video.twimg.com.akahost.net"
                 "Akamai@eip-tata" -> "eip-tata.video.twimg.com.akahost.net"
-                "Akamai@ak" -> "video-ak.twimg.com"
                 "Zero" -> "video-zero.twimg.com"
                 "Edgecast@ec" -> "video-ec.twimg.com"
                 "Fastly@ft" -> "video-ft.twimg.com"
@@ -56,9 +63,9 @@ class HostPatch {
         private fun abs(cdnServer: String): String {
             return when (cdnServer) {
                 "Auto@twimg.ryuar.in" -> auto("abs.twimg.com")
+                "Akamai@ak" -> "abs-ak.twimg.com"
                 "Akamai@eip-ntt" -> "abs-ak.twimg.com"
                 "Akamai@eip-tata" -> "abs-ak.twimg.com"
-                "Akamai@ak" -> "abs-ak.twimg.com"
                 "Zero" -> "abs-zero.twimg.com"
                 "Edgecast@ec" -> "abs-ec.twimg.com"
                 "Fastly@ft" -> "abs-ft.twimg.com"

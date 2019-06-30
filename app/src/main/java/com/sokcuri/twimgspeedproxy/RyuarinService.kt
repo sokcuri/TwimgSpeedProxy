@@ -20,7 +20,7 @@ class RyuarinService {
                 // Log.d(RyuarinServiceTag, "Not Expired")
                 return false
             }
-            expire = System.currentTimeMillis() + 1000 * 60 * 30
+            expire = System.currentTimeMillis() + 1000 * 60 * 15
             val client = OkHttpClient()
             val request = Request.Builder()
                 .url("https://twimg.ryuar.in/json")
@@ -43,6 +43,7 @@ class RyuarinService {
             val body = asyncTask.execute().get()
             if (body == null) {
                 Log.d(RyuarinServiceTag, "서버 리스트를 가져올 수 없습니다")
+                expire = System.currentTimeMillis() + 1000 * 60 * 5
                 return false
             }
 
@@ -51,6 +52,7 @@ class RyuarinService {
                 table = gson.fromJson(body, RyuarinTable::class.java)
             } catch (exception: Exception) {
                 Log.d(RyuarinServiceTag, "gson exception raised")
+                expire = System.currentTimeMillis() + 1000 * 60 * 5
             }
             return true
         }

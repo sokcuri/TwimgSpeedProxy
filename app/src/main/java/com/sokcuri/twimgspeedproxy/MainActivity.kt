@@ -26,6 +26,8 @@ import android.widget.CompoundButton
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    var FinishSettingActivity = 3000
+
     companion object {
         var mainActivity: MainActivity? = null
         fun setServiceSwitch(checked: Boolean) {
@@ -148,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, FinishSettingActivity)
             }
             R.id.readme -> {
                 openBrowser(
@@ -262,6 +264,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                FinishSettingActivity -> recreate()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
 
 private fun CompoundButton.setOnCheckedChangeListener() {
