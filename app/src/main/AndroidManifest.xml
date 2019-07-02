@@ -70,10 +70,6 @@
                 android:name=".ProxyService"
                 android:enabled="true"
                 android:exported="false"/>
-        <meta-data
-                android:name="io.fabric.ApiKey"
-                android:value="54b12b0855b8dd7c027ccf8896c2def721f4ae7a"
-        />
     </application>
 
 </manifest>
