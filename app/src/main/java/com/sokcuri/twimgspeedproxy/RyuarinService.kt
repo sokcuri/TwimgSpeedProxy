@@ -20,7 +20,7 @@ class RyuarinService {
                 // Log.d(RyuarinServiceTag, "Not Expired")
                 return false
             }
-            expire = System.currentTimeMillis() + 1000 * 60 * 15
+            expire = System.currentTimeMillis() + 1000 * 60 * 5
             val client = OkHttpClient()
 
             val spec: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
