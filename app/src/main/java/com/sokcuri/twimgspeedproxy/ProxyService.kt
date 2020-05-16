@@ -74,8 +74,8 @@ class ProxyService: Service() {
             val channelID = "com.sokcuri.twimgspeedproxy"
             val channelName = "TwimgSpeedProxy Background Service"
 
-            val notificationTitle = "트위터 이미지 고속 프록시가 활성화됨"
-            val notificationDesc = "트위터 이미지 고속 프록시가 동작중입니다"
+            val notificationTitle = "트위터 이미지 고속 프록시 대기 중"
+            val notificationDesc = "프록시가 트위터에 연결되지 않았습니다"
 
             val contentIntent = PendingIntent.getActivity(
                 context,
@@ -133,6 +133,8 @@ class ProxyService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
+
+            RyuarinService.confirmIncoming = false
 
             when (intent.action) {
                 ActionStartForegroundService -> startProxyService()

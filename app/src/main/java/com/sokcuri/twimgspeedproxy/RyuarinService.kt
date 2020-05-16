@@ -22,12 +22,24 @@ class RyuarinService {
         private const val RyuarinServiceTag = "RyuarinService"
         var table: RyuarinTable? = null
         var expire: Long = 0
+        var confirmIncoming = false;
 
         fun update(context: Context): Boolean {
+            if (!confirmIncoming) {
+                val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                if (ProxyService.notificationBuilder != null) {
+                    val builder = ProxyService.notificationBuilder!!;
+                    builder.setContentTitle("트위터 이미지 프록시가 연결됨")
+                    builder.setContentText("트위터 이미지 프록시가 작동하고 있습니다")
+                    notificationManager.notify(1, builder.build())
+                    confirmIncoming = true
+                }
+            }
             if (expire > System.currentTimeMillis()) {
                 // Log.d(RyuarinServiceTag, "Not Expired")
                 return false
             }
+
             expire = System.currentTimeMillis() + 1000 * 60 * 5
             val client = OkHttpClient()
 
