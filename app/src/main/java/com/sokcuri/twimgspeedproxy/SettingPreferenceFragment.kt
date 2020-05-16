@@ -25,8 +25,17 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         findPreference("versionInfo").summary = BuildConfig.VERSION_NAME
-        findPreference("proxyPort").summary =
-            sharedPref.getString("proxyPort", "57572")
+        findPreference("netConnectTimeout").summary =
+            sharedPref.getString("netConnectTimeout", "1000")
+        findPreference("netIdleConnectionTimeout").summary =
+            sharedPref.getString("netIdleConnectionTimeout", "10")
+        findPreference("netHTTPConnectionThread").summary =
+            sharedPref.getString("netHTTPConnectionThread", "8")
+        findPreference("netProxyWorkerThread").summary =
+            sharedPref.getString("netProxyWorkerThread", "16")
+        findPreference("netServerWorkerThread").summary =
+            sharedPref.getString("netServerWorkerThread", "16")
+
         findPreference("cdnServer").summary =
             sharedPref.getString("cdnServer", "Akamai")
     }
@@ -81,6 +90,144 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
                     return true
                 }
             }
+
+        findPreference("netConnectTimeout").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    if (!TextUtils.isDigitsOnly(p1 as String) ||
+                        TextUtils.isEmpty(p1) ||
+                        Integer.parseInt(p1) <= 0 ||
+                        Integer.parseInt(p1) > 60000) {
+                        return false
+                    }
+
+                    LittleProxy.connectTimeout = Integer.parseInt(p1)
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
+
+                    p0?.summary = LittleProxy.connectTimeout.toString()
+                    Log.d("connectTimeout", p1.toString())
+                    return true
+                }
+            }
+
+        findPreference("netIdleConnectionTimeout").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    if (!TextUtils.isDigitsOnly(p1 as String) ||
+                        TextUtils.isEmpty(p1) ||
+                        Integer.parseInt(p1) <= 0 ||
+                        Integer.parseInt(p1) > 100) {
+                        return false
+                    }
+
+                    LittleProxy.idleConnectionTimeout = Integer.parseInt(p1)
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
+
+                    p0?.summary = LittleProxy.idleConnectionTimeout.toString()
+                    Log.d("idleConnectionTimeout", p1.toString())
+                    return true
+                }
+            }
+
+        findPreference("netHTTPConnectionThread").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    if (!TextUtils.isDigitsOnly(p1 as String) ||
+                        TextUtils.isEmpty(p1) ||
+                        Integer.parseInt(p1) <= 0 ||
+                        Integer.parseInt(p1) > 32) {
+                        return false
+                    }
+
+                    LittleProxy.httpConnectionThread = Integer.parseInt(p1)
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
+
+                    p0?.summary = LittleProxy.httpConnectionThread.toString()
+                    Log.d("httpConnectionThread", p1.toString())
+                    return true
+                }
+            }
+
+        findPreference("netProxyWorkerThread").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    if (!TextUtils.isDigitsOnly(p1 as String) ||
+                        TextUtils.isEmpty(p1) ||
+                        Integer.parseInt(p1) <= 0 ||
+                        Integer.parseInt(p1) > 32) {
+                        return false
+                    }
+
+                    LittleProxy.proxyWorkerThread = Integer.parseInt(p1)
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
+
+                    p0?.summary = LittleProxy.proxyWorkerThread.toString()
+                    Log.d("proxyWorkerThread", p1.toString())
+                    return true
+                }
+            }
+
+        findPreference("netServerWorkerThread").onPreferenceChangeListener =
+            object : Preference.OnPreferenceChangeListener {
+                override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
+                    if (!TextUtils.isDigitsOnly(p1 as String) ||
+                        TextUtils.isEmpty(p1) ||
+                        Integer.parseInt(p1) <= 0 ||
+                        Integer.parseInt(p1) > 32) {
+                        return false
+                    }
+
+                    LittleProxy.serverWorkerThread = Integer.parseInt(p1)
+
+                    val intent = Intent(context, ProxyService::class.java)
+                    intent.action = ProxyService.ActionRestartForegroundService
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context?.startForegroundService(intent)
+                    } else {
+                        context?.startService(intent)
+                    }
+
+                    p0?.summary = LittleProxy.serverWorkerThread.toString()
+                    Log.d("serverWorkerThread", p1.toString())
+                    return true
+                }
+            }
+
+
+
     }
 
     override fun onCreateAdapter(preferenceScreen: PreferenceScreen?): RecyclerView.Adapter<*> {

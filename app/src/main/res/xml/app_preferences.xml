@@ -35,8 +35,47 @@
         </Preference>
     </PreferenceCategory>
     <PreferenceCategory
+            android:summary="트위터 고속 프록시의 네트워크 설정 값입니다"
+            android:title="고급 설정">
+        <EditTextPreference
+                android:key="netConnectTimeout"
+                android:title="Connect Timeout"
+                android:summary="0"
+                android:dialogMessage="프록시와 트위터 클라이언트 간의 커넥트 타임아웃 값을 설정합니다 (기본값 1000ms)"
+                android:defaultValue="1000"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+        <EditTextPreference
+                android:key="netIdleConnectionTimeout"
+                android:title="Idle Connection Timeout"
+                android:summary="0"
+                android:dialogMessage="프록시와 클라이언트 사이의 연결이 유휴 상태일 때 연결을 몇 초 동안 유지할지 설정합니다. 너무 길게 잡으면 클라이언트에서 데이터를 제대로 받아오지 못할 수 있습니다 (기본값 10s)"
+                android:defaultValue="10"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+        <EditTextPreference
+                android:key="netHTTPConnectionThread"
+                android:title="HTTP Connection Thread"
+                android:summary="0"
+                android:dialogMessage="HTTP 연결에 사용되는 워커 쓰레드의 갯수를 설정합니다 (기본값 8)"
+                android:defaultValue="8"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+        <EditTextPreference
+                android:key="netProxyWorkerThread"
+                android:title="Proxy Worker Thread"
+                android:summary="0"
+                android:dialogMessage="트위터 클라이언트와 프록시 사이의 통신에 사용될 쓰레드의 갯수를 설정합니다 (기본값 16)"
+                android:defaultValue="16"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+        <EditTextPreference
+                android:key="netServerWorkerThread"
+                android:title="Server Worker Thread"
+                android:summary="0"
+                android:dialogMessage="트위터 프록시와 트위터 이미지 서버 사이의 통신에 사용될 쓰레드의 갯수를 설정합니다 (기본값 16)"
+                android:defaultValue="16"
+                android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
+    </PreferenceCategory>
+    <PreferenceCategory
                 android:title="정보">
-    <Preference
+        <Preference
                 android:title="개발자 트위터 가기"
                 android:summary="소쿠릿">
                 <intent android:action="android.intent.action.VIEW"

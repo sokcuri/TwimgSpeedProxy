@@ -25,6 +25,11 @@ class LittleProxy {
 
     companion object {
         var port = 57572
+        var connectTimeout = 1000
+        var idleConnectionTimeout = 10
+        var httpConnectionThread = 8
+        var proxyWorkerThread = 16
+        var serverWorkerThread = 16
         var cdnServer: String? = null
     }
     constructor(context: Context) {
@@ -32,7 +37,11 @@ class LittleProxy {
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
 
-        port = Integer.parseInt(sharedPref.getString("proxyPort", "57572")!!)
+        connectTimeout = Integer.parseInt(sharedPref.getString("netConnectTimeout", "1000")!!)
+        idleConnectionTimeout = Integer.parseInt(sharedPref.getString("netIdleConnectionTimeout", "10")!!)
+        httpConnectionThread = Integer.parseInt(sharedPref.getString("netHTTPConnectionThread", "8")!!)
+        proxyWorkerThread = Integer.parseInt(sharedPref.getString("netProxyWorkerThread", "16")!!)
+        serverWorkerThread = Integer.parseInt(sharedPref.getString("netServerWorkerThread", "16")!!)
         val serverArray = context.resources.getStringArray(R.array.servers_value)
         cdnServer = serverArray.find {
             it == sharedPref.getString("cdnServer", "")
@@ -50,13 +59,13 @@ class LittleProxy {
         this.server = DefaultHttpProxyServer.bootstrap()
             .withPort(port)
             .withAllowRequestToOriginServer(true)
-            .withConnectTimeout(1000)
-            .withIdleConnectionTimeout(10)
+            .withConnectTimeout(connectTimeout)
+            .withIdleConnectionTimeout(idleConnectionTimeout)
             .withThreadPoolConfiguration(
                 ThreadPoolConfiguration()
-                .withAcceptorThreads(8)
-                .withClientToProxyWorkerThreads(16)
-                .withProxyToServerWorkerThreads(16)
+                .withAcceptorThreads(httpConnectionThread)
+                .withClientToProxyWorkerThreads(proxyWorkerThread)
+                .withProxyToServerWorkerThreads(serverWorkerThread)
             )
             .withFiltersSource(object : HttpFiltersSourceAdapter() {
                 override fun filterRequest(originalRequest: HttpRequest, ctx: ChannelHandlerContext): HttpFilters {
