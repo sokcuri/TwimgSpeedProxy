@@ -4,6 +4,7 @@ import android.content.Context
 import org.littleshoot.proxy.HttpProxyServer
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer
 import android.support.v7.preference.PreferenceManager
+import android.widget.Toast
 import com.google.common.net.HostAndPort
 import org.littleshoot.proxy.HttpFiltersAdapter
 import io.netty.channel.ChannelHandlerContext
@@ -49,7 +50,7 @@ class LittleProxy {
                 override fun filterRequest(originalRequest: HttpRequest, ctx: ChannelHandlerContext): HttpFilters {
                     return object : HttpFiltersAdapter(originalRequest) {
                         override fun proxyToServerResolutionStarted(hostAndPort: String): InetSocketAddress? {
-                            RyuarinService.update()
+                            RyuarinService.update(context)
 
                             var parsedHostAndPort: HostAndPort
                             try {

@@ -18,7 +18,7 @@ class BootReceiver : BroadcastReceiver() {
             intent.action = ProxyService.ActionStartForegroundService
 
             // https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
-            val connection = ProxyService.getServiceConnection(context)
+            val connection = ProxyService.getServiceConnection()
             try {
                 context.bindService(
                     intent, connection,

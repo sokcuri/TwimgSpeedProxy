@@ -21,10 +21,11 @@ class ProxyService: Service() {
         const val ActionRestartForegroundService = "ACTION_RESTART_FOREGROUND_SERVICE"
         const val ActionAbortForegroundService = "ACTION_ABORT_FOREGROUND_SERVICE"
         const val ActionStopForegroundService = "ACTION_STOP_FOREGROUND_SERVICE"
+        var notificationBuilder: NotificationCompat.Builder? = null;
 
         var IsServiceRunning = false
 
-        fun getServiceConnection(context: Context): ServiceConnection {
+        fun getServiceConnection(): ServiceConnection {
             return object : ServiceConnection {
                 val TAG = "ProxyService";
                 override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -36,21 +37,24 @@ class ProxyService: Service() {
 
                     // getServiceIntent(context) returns the relative service intent
 
-                    val intent = Intent(context, ProxyService::class.java)
+                    val intent = Intent(proxyService, ProxyService::class.java)
                     intent.action = ProxyService.ActionStartForegroundService
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        context.startForegroundService(intent)
+                        proxyService.startForegroundService(intent)
                     } else {
-                        context.startService(intent)
+                        proxyService.startService(intent)
                     }
 
                     // This is the key: Without waiting Android Framework to call this method
                     // inside Service.onCreate(), immediately call here to post the notification.
-                    proxyService.startForeground(1, getNotification(context))
+                    notificationBuilder = getNotification(proxyService)
+                    proxyService.startForeground(1, notificationBuilder!!.build())
 
                     // Release the connection to prevent leaks.
-                    context.unbindService(this)
+                    try {
+                        proxyService.unbindService(this)
+                    } catch (exception: Exception) { }
                 }
 
                 override fun onBindingDied(name: ComponentName) {
@@ -66,7 +70,7 @@ class ProxyService: Service() {
                 }
             }
         }
-        private fun getNotification(context: Context): Notification {
+        private fun getNotification(context: Context): NotificationCompat.Builder {
             val channelID = "com.sokcuri.twimgspeedproxy"
             val channelName = "TwimgSpeedProxy Background Service"
 
@@ -79,30 +83,27 @@ class ProxyService: Service() {
                 Intent(context, MainActivity::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            if (android.os.Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val notificationChannel = NotificationChannel(
                     channelID,
-                    channelName, NotificationManager.IMPORTANCE_NONE
+                    channelName,
+                    NotificationManager.IMPORTANCE_NONE
                 )
-                val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.createNotificationChannel(notificationChannel)
-
-                // Build the notification.
-                return Notification.Builder(context, channelID)
-                    .setContentTitle(notificationTitle)
-                    .setContentText(notificationDesc)
-                    .setSmallIcon(R.drawable.ic_action_twitter)
-                    .setContentIntent(contentIntent)
-                    .build()
-            } else {
-                return NotificationCompat.Builder(context, "default")
-                    .setContentTitle(notificationTitle)
-                    .setContentText(notificationDesc)
-                    .setSmallIcon(R.drawable.ic_action_twitter)
-                    .setContentIntent(contentIntent)
-                    .build()
             }
+
+
+            val notificationBuilder =
+                NotificationCompat.Builder(context, channelID)
+
+            return notificationBuilder
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationDesc)
+                .setSmallIcon(R.drawable.ic_action_twitter)
+                .setContentIntent(contentIntent)
         }
     }
 
@@ -155,47 +156,9 @@ class ProxyService: Service() {
         editor.putBoolean("serviceRun", true)
         editor.commit()
 
-        makeNotification()
-    }
-
-    private fun makeNotification() {
-        val channelID = "com.sokcuri.twimgspeedproxy"
-        val channelName = "TwimgSpeedProxy Background Service"
-
-        val notificationTitle = "트위터 이미지 고속 프록시가 활성화됨"
-        val notificationDesc = "트위터 이미지 고속 프록시가 동작중입니다"
-
-        val contentIntent = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            val notificationChannel = NotificationChannel(
-                channelID,
-                channelName, NotificationManager.IMPORTANCE_NONE
-            )
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(notificationChannel)
-
-            // Build the notification.
-            val notification = Notification.Builder(this, channelID)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationDesc)
-                .setSmallIcon(R.drawable.ic_action_twitter)
-                .setContentIntent(contentIntent)
-                .build()
-            startForeground(1, notification)
-        } else {
-            val notification = NotificationCompat.Builder(this, "default")
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationDesc)
-                .setSmallIcon(R.drawable.ic_action_twitter)
-                .setContentIntent(contentIntent)
-                .build()
-            startForeground(1, notification)
+        if (notificationBuilder == null) {
+            notificationBuilder = getNotification(this)
+            startForeground(1, notificationBuilder!!.build())
         }
     }
 

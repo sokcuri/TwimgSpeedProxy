@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val intent = Intent(this@MainActivity, ProxyService::class.java)
 
         // https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
-        val connection = ProxyService.getServiceConnection(this)
+        val connection = ProxyService.getServiceConnection()
         try {
             this.bindService(
                 intent, connection,

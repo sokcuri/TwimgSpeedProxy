@@ -1,8 +1,16 @@
 package com.sokcuri.twimgspeedproxy
 
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
+import android.support.v4.app.NotificationCompat
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.squareup.okhttp.*
@@ -15,7 +23,7 @@ class RyuarinService {
         var table: RyuarinTable? = null
         var expire: Long = 0
 
-        fun update(): Boolean {
+        fun update(context: Context): Boolean {
             if (expire > System.currentTimeMillis()) {
                 // Log.d(RyuarinServiceTag, "Not Expired")
                 return false
