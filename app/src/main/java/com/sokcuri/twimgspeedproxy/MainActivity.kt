@@ -244,13 +244,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun startProxy() {
         val intent = Intent(this@MainActivity, ProxyService::class.java)
-        intent.action = ProxyService.ActionStartForegroundService
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
+        // https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
+        val connection = ProxyService.getServiceConnection(this)
+        try {
+            this.bindService(
+                intent, connection,
+                Context.BIND_AUTO_CREATE
+            )
+        } catch (ignored: RuntimeException) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent)
+            } else {
+                this.startService(intent)
+            }
         }
+        MainActivity.setServiceSwitch(true)
     }
 
     private fun stopProxy() {
