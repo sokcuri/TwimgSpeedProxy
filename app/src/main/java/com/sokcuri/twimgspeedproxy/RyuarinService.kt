@@ -1,13 +1,13 @@
 package com.sokcuri.twimgspeedproxy
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-import org.json.JSONArray
+import com.squareup.okhttp.*
 import java.util.*
+
 
 class RyuarinService {
     companion object {
@@ -22,11 +22,24 @@ class RyuarinService {
             }
             expire = System.currentTimeMillis() + 1000 * 60 * 15
             val client = OkHttpClient()
+
+            val spec: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+                .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+                .cipherSuites(
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+                )
+                .build()
+
+            client.connectionSpecs = Collections.singletonList(spec);
+
             val request = Request.Builder()
                 .url("https://twimg.ryuar.in/json")
                 .build()
-
-            val asyncTask = object : AsyncTask<Void, Void, String>() {
+            val asyncTask = @SuppressLint("StaticFieldLeak")
+            object : AsyncTask<Void, Void, String>() {
                 override fun doInBackground(vararg params: Void): String? {
                     return try {
                         val response = client.newCall(request).execute()
