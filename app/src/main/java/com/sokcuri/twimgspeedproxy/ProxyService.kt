@@ -93,6 +93,7 @@ class ProxyService: Service() {
                     channelName,
                     NotificationManager.IMPORTANCE_NONE
                 )
+                notificationChannel.setShowBadge(false)
                 notificationManager.createNotificationChannel(notificationChannel)
             }
 
