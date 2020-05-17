@@ -37,6 +37,7 @@ class LittleProxy {
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
 
+        port = Integer.parseInt(sharedPref.getString("proxyPort", "57572")!!)
         connectTimeout = Integer.parseInt(sharedPref.getString("netConnectTimeout", "1000")!!)
         idleConnectionTimeout = Integer.parseInt(sharedPref.getString("netIdleConnectionTimeout", "10")!!)
         httpConnectionThread = Integer.parseInt(sharedPref.getString("netHTTPConnectionThread", "8")!!)

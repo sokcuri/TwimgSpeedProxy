@@ -75,7 +75,7 @@
     </PreferenceCategory>
     <PreferenceCategory
                 android:title="정보">
-        <Preference
+    <Preference
                 android:title="개발자 트위터 가기"
                 android:summary="소쿠릿">
                 <intent android:action="android.intent.action.VIEW"

@@ -25,6 +25,8 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         findPreference("versionInfo").summary = BuildConfig.VERSION_NAME
+        findPreference("proxyPort").summary =
+            sharedPref.getString("proxyPort", "57572")
         findPreference("netConnectTimeout").summary =
             sharedPref.getString("netConnectTimeout", "1000")
         findPreference("netIdleConnectionTimeout").summary =

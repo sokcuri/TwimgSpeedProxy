@@ -50,6 +50,7 @@ class ProxyService: Service() {
                     // inside Service.onCreate(), immediately call here to post the notification.
                     notificationBuilder = getNotification(proxyService)
                     proxyService.startForeground(1, notificationBuilder!!.build())
+                    RyuarinService.confirmIncoming = false
 
                     // Release the connection to prevent leaks.
                     try {
@@ -134,8 +135,6 @@ class ProxyService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
 
-            RyuarinService.confirmIncoming = false
-
             when (intent.action) {
                 ActionStartForegroundService -> startProxyService()
                 ActionRestartForegroundService -> restartProxyService()
@@ -161,6 +160,7 @@ class ProxyService: Service() {
         if (notificationBuilder == null) {
             notificationBuilder = getNotification(this)
             startForeground(1, notificationBuilder!!.build())
+            RyuarinService.confirmIncoming = false
         }
     }
 
