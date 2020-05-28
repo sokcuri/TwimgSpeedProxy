@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         readmeBtn.setOnClickListener {
             openBrowser(
             "https://docs.google.com/document/d/e/2PACX-1vSJr_ajbt" +
-                    "PPDHl_9YXjl_-tr8eBprA0MJwN3PT8fU4-dOVpybbxOUVhDo0sOCMxiL86P1QhFDGp_M6e/pub")
+                    "PPDHl_9YXjl_-tr8eBprA0MJwN3PT8fU4-dOVpybbxOUVhDo0sOCMxiL86P1QhFDGp_M6e/pub?embedded=true")
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.readme -> {
                 openBrowser(
                     "https://docs.google.com/document/d/e/2PACX-1vSJr_ajbt" +
-                    "PPDHl_9YXjl_-tr8eBprA0MJwN3PT8fU4-dOVpybbxOUVhDo0sOCMxiL86P1QhFDGp_M6e/pub")
+                    "PPDHl_9YXjl_-tr8eBprA0MJwN3PT8fU4-dOVpybbxOUVhDo0sOCMxiL86P1QhFDGp_M6e/pub?embedded=true")
             }
             R.id.sokcuri_twitter -> {
                 openIntent("https://twitter.com/sokcuri")
@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Uri.parse(uriString)
             )
 
-            val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
+            val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://"))
             val browseResolution = packageManager.resolveActivity(
                 browseIntent,
                 PackageManager.MATCH_DEFAULT_ONLY

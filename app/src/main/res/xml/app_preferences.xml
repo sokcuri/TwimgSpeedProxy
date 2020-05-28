@@ -41,15 +41,15 @@
                 android:key="netConnectTimeout"
                 android:title="Connect Timeout"
                 android:summary="0"
-                android:dialogMessage="프록시와 트위터 클라이언트 간의 커넥트 타임아웃 값을 설정합니다 (기본값 1000ms)"
-                android:defaultValue="1000"
+                android:dialogMessage="프록시와 트위터 클라이언트 간의 커넥트 타임아웃 값을 설정합니다 (기본값 10000ms)"
+                android:defaultValue="10000"
                 android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
         <EditTextPreference
                 android:key="netIdleConnectionTimeout"
                 android:title="Idle Connection Timeout"
                 android:summary="0"
-                android:dialogMessage="프록시와 클라이언트 사이의 연결이 유휴 상태일 때 연결을 몇 초 동안 유지할지 설정합니다. 너무 길게 잡으면 클라이언트에서 데이터를 제대로 받아오지 못할 수 있습니다 (기본값 10s)"
-                android:defaultValue="10"
+                android:dialogMessage="프록시와 클라이언트 사이의 연결이 유휴 상태일 때 연결을 몇 초 동안 유지할지 설정합니다. 너무 길게 잡으면 클라이언트에서 데이터를 제대로 받아오지 못할 수 있습니다 (기본값 16s)"
+                android:defaultValue="16"
                 android:dialogLayout="@layout/pref_dialog_edittext_fix"/>
         <EditTextPreference
                 android:key="netHTTPConnectionThread"

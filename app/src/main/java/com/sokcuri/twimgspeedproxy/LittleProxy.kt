@@ -25,17 +25,32 @@ class LittleProxy {
 
     companion object {
         var port = 57572
-        var connectTimeout = 1000
-        var idleConnectionTimeout = 10
+        var connectTimeout = 10000
+        var idleConnectionTimeout = 16
         var httpConnectionThread = 8
         var proxyWorkerThread = 16
         var serverWorkerThread = 16
+        var prefVersion = 100
         var cdnServer: String? = null
     }
     constructor(context: Context) {
         this.context = context
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+
+        var currPrefVersion = Integer.parseInt(sharedPref.getString("prefVersion", "0"))
+
+        // pref 값 초기화
+        if (currPrefVersion < prefVersion) {
+            var editor = sharedPref.edit()
+            editor.remove("netConnectTimeout")
+            editor.remove("netIdleConnectionTimeout")
+            editor.remove("netHTTPConnectionThread")
+            editor.remove("netProxyWorkerThread")
+            editor.remove("netServerWorkerThread")
+            editor.putString("prefVersion", prefVersion.toString())
+            editor.commit()
+        }
 
         port = Integer.parseInt(sharedPref.getString("proxyPort", "57572")!!)
         connectTimeout = Integer.parseInt(sharedPref.getString("netConnectTimeout", "1000")!!)

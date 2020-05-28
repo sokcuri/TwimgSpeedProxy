@@ -40,7 +40,7 @@ class RyuarinService {
                 return false
             }
 
-            expire = System.currentTimeMillis() + 1000 * 60 * 5
+            expire = System.currentTimeMillis() + 1000 * 60 * 15
             val client = OkHttpClient()
 
             val spec: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
